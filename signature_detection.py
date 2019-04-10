@@ -7,6 +7,7 @@ from scipy import ndimage as nd
 from scipy.linalg import norm
 from skimage.color import rgb2gray
 from skimage.filters import gabor_kernel
+from utils import unique_values_in_list
 
 signature_location = {
     'ABCD': {
