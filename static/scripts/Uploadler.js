@@ -99,7 +99,7 @@
         xhr.send();
     };
 
-    App.modifyTable = function(nodes, key, res) {
+    App.modifyTable = function(nodes, key, res, f) {
         let it, len;
         nodes[1].innerHTML += key;
             nodes[3].innerHTML += res['page_count'];
@@ -112,11 +112,16 @@
             for (it = 0, len = res['annotations_list'].length; it < len; it++) {
                 nodes[7].innerHTML += res['annotations_list'][it];
             }
-            if (res['annotations_flag']) {
+            if (f === 'incoming' && res['annotations_flag']) {
+                window.highlight = 'green'
                 nodes[9].childNodes[0].classList.add("highlight-green");
             }
             else {
+                window.highlight = 'green'
                 nodes[9].childNodes[0].classList.add("highlight-red");
+            }
+            if (f === 'outgoing') {
+                nodes[9].childNodes[0].classList.add("highlight-"+window.highlight);
             }
             if (res['signature_present']) {
                 nodes[11].childNodes[0].classList.add("highlight-green");
@@ -193,9 +198,9 @@
             b = entries[it+1][1];
             frag = document.createRange().createContextualFragment(row);
             nodes = frag.getElementById("top-row").childNodes;
-            App.modifyTable(nodes, a[0], a[1]);
+            App.modifyTable(nodes, a[0], a[1], 'incoming');
             nodes = frag.getElementById("bottom-row").childNodes;
-            App.modifyTable(nodes, b[0], b[1]);
+            App.modifyTable(nodes, b[0], b[1], 'outgoing');
             bottomContainer.appendChild(frag);
         }
     };
